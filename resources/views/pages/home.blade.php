@@ -5,7 +5,7 @@
 {{-- HERO --}}
 <section class="relative bg-brand-dark text-white overflow-hidden hero-curved-bottom shadow-xl">
   <div class="absolute inset-0 z-0">
-    <img src="{{ asset('images/hero.jpg') }}" alt="SA Properti"
+    <img src="{{ asset(Setting::get('hero_image')) }}" alt="SA Properti"
          class="w-full h-full object-cover brightness-[0.82]" style="object-position: left center;">
     <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/60"></div>
     <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-black/50"></div>
@@ -16,14 +16,14 @@
       <div class="hidden lg:block lg:col-span-5"></div>
       <div class="lg:col-span-7 flex flex-col items-start lg:items-end text-left lg:text-right">
         <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight max-w-2xl">
-          Wujudkan Hunian &amp; Investasi Properti Terbaik Anda
+          {{ Setting::get('hero_title') }}
         </h1>
         <p class="mt-4 text-sm sm:text-base text-gray-200 leading-relaxed max-w-xl">
-          Kemitraan terpercaya untuk jasa arsitektur, konstruksi bergaransi, dan renovasi modern dengan transparansi biaya 100% dan pengerjaan tepat waktu.
+          {{ Setting::get('hero_subtitle') }}
         </p>
         <div class="mt-8">
           <a href="{{ route('projects.index') }}"
-            class="inline-block px-8 py-3 rounded-full bg-white text-brand-dark font-bold text-sm hover:bg-brand-red hover:text-white transition">Lihat Proyek</a>
+             class="inline-block px-8 py-3 rounded-full bg-white text-brand-dark font-bold text-sm hover:bg-brand-red hover:text-white transition">Lihat Proyek</a>
         </div>
       </div>
     </div>

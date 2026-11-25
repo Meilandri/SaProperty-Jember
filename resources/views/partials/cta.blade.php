@@ -9,7 +9,7 @@
         {{ $text ?? 'Hubungi konsultan SA Properti untuk survey lokasi, perhitungan estimasi anggaran kasar, dan paparan portofolio lengkap tanpa dipungut biaya.' }}
       </p>
       <div class="mt-8">
-        <a href="https://wa.me/6281234567890" target="_blank"
+        <a href="https://wa.me/{{ Setting::get('whatsapp') }}" target="_blank"
            class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-primary-container hover:bg-primary text-white font-bold text-sm transition">
           <i class="fa-brands fa-whatsapp text-lg"></i> Konsultasi Lewat WhatsApp
         </a>

@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Inquiry;
-use App\Support\SiteData;
+use App\Models\CatalogItem;
+use App\Models\Category;
+use App\Models\Project;
 
 class DashboardController extends Controller
 {
@@ -12,12 +13,12 @@ class DashboardController extends Controller
     {
         return view('admin.dashboard', [
             'stats' => [
-                ['Total Pesan',  Inquiry::count(),                            'fa-inbox',        'bg-blue-50 text-blue-600'],
-                ['Belum Dibaca', Inquiry::whereNull('read_at')->count(),      'fa-envelope',     'bg-red-50 text-primary-container'],
-                ['Proyek',       SiteData::projects()->count(),               'fa-building',     'bg-green-50 text-secondary'],
-                ['Layanan Katalog', SiteData::catalog()->count(),             'fa-book-open',    'bg-amber-50 text-amber-600'],
+                ['Proyek',          Project::count(),                              'fa-building',  'bg-green-50 text-secondary'],
+                ['Layanan Katalog', CatalogItem::count(),                          'fa-book-open', 'bg-amber-50 text-amber-600'],
+                ['Kategori',        Category::count(),                             'fa-tags',      'bg-blue-50 text-blue-600'],
+                ['Draf (belum tayang)', Project::where('is_published', false)->count()
+                                        + CatalogItem::where('is_published', false)->count(), 'fa-eye-slash', 'bg-gray-100 text-gray-600'],
             ],
-            'latest' => Inquiry::latest()->take(5)->get(),
         ]);
     }
 }

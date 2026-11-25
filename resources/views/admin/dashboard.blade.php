@@ -16,25 +16,18 @@
   @endforeach
 </div>
 
-<div class="bg-white border border-surface-container-high rounded-2xl shadow-sm">
-  <div class="px-5 py-4 flex items-center justify-between border-b border-surface-container-high">
-    <h2 class="font-bold">Pesan Terbaru</h2>
-    <a href="{{ route('admin.inquiries.index') }}" class="text-sm font-semibold text-primary-container hover:underline">Lihat semua</a>
-  </div>
-
-  @forelse ($latest as $q)
-    <div class="px-5 py-4 border-b last:border-0 border-surface-container-high flex items-start justify-between gap-4">
-      <div class="min-w-0">
-        <p class="font-semibold text-sm">
-          {{ $q->name }}
-          @unless ($q->read_at) <span class="ml-1 px-2 py-0.5 rounded-full bg-red-50 text-primary-container text-[10px] font-bold">BARU</span> @endunless
-        </p>
-        <p class="text-xs text-gray-500 truncate">{{ $q->message }}</p>
-      </div>
-      <span class="text-xs text-gray-400 whitespace-nowrap">{{ $q->created_at->diffForHumans() }}</span>
-    </div>
-  @empty
-    <p class="px-5 py-10 text-center text-sm text-gray-500">Belum ada pesan masuk.</p>
-  @endforelse
+<h2 class="font-bold mb-4">Aksi Cepat</h2>
+<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+  @foreach ([
+    [route('admin.projects.create'), 'Tambah Proyek', 'fa-plus'],
+    [route('admin.catalog.create'), 'Tambah Layanan Katalog', 'fa-plus'],
+    [route('admin.settings.edit', 'beranda'), 'Ganti Gambar Hero', 'fa-image'],
+    [route('admin.categories.index'), 'Kelola Kategori', 'fa-tags'],
+  ] as [$href, $label, $icon])
+    <a href="{{ $href }}"
+       class="bg-white border border-surface-container-high rounded-2xl p-5 shadow-sm flex items-center gap-3 font-semibold text-sm hover:border-primary-container hover:text-primary-container transition-colors">
+      <i class="fa-solid {{ $icon }}"></i> {{ $label }}
+    </a>
+  @endforeach
 </div>
 @endsection

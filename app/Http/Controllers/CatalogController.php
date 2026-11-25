@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CatalogItem;
 use App\Support\SiteData;
 use Illuminate\Http\Request;
 
@@ -10,24 +11,24 @@ class CatalogController extends Controller
     public function index(Request $request)
     {
         $categories = SiteData::catalogCategories();
-        $items = SiteData::catalog();
+        $query = CatalogItem::published();
 
         $active = $request->query('kategori', 'all');
         if (! array_key_exists($active, $categories)) {
             $active = 'all';
         } else {
-            $items = $items->where('category', $active);
+            $query->where('category', $active);
         }
 
         $sort = $request->query('urut', 'popular');
-        $items = match ($sort) {
-            'price-low'  => $items->sortBy('price'),
-            'price-high' => $items->sortByDesc('price'),
-            default      => $items->sortBy('popular'),
+        match ($sort) {
+            'price-low'  => $query->orderBy('price'),
+            'price-high' => $query->orderByDesc('price'),
+            default      => $query->orderBy('popular'),
         };
 
         return view('pages.catalog.index', [
-            'items'      => $items->values(),
+            'items'      => $query->get(),
             'categories' => $categories,
             'active'     => $active,
             'sort'       => $sort,
@@ -36,13 +37,12 @@ class CatalogController extends Controller
 
     public function show(string $slug)
     {
-        $item = SiteData::catalog()->firstWhere('slug', $slug);
-        abort_if(! $item, 404);
+        $item = CatalogItem::published()->where('slug', $slug)->firstOrFail();
 
         return view('pages.catalog.show', [
             'item'       => $item,
             'categories' => SiteData::catalogCategories(),
-            'related'    => SiteData::catalog()->where('slug', '!=', $slug)->take(3)->values(),
+            'related'    => CatalogItem::published()->where('slug', '!=', $slug)->orderBy('popular')->take(3)->get(),
         ]);
     }
 }

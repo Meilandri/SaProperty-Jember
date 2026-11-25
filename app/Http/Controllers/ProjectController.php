@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use App\Support\SiteData;
 use Illuminate\Http\Request;
 
@@ -10,17 +11,17 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
         $categories = SiteData::projectCategories();
-        $items = SiteData::projects();
+        $query = Project::published();
 
         $active = $request->query('kategori', 'all');
         if (! array_key_exists($active, $categories)) {
             $active = 'all';
         } else {
-            $items = $items->where('category', $active);
+            $query->where('category', $active);
         }
 
         $sort = $request->query('urut', 'terbaru');
-        $items = $sort === 'terpopuler' ? $items->sortBy('popular') : $items->sortByDesc('date');
+        $sort === 'terpopuler' ? $query->orderBy('popular') : $query->orderByDesc('completed_at');
 
         $testimonials = [
             ['initial' => 'BW', 'name' => 'Bapak Budi Wijaya',    'role' => 'Pemilik Rumah, BSD City',     'text' => 'RAB sangat transparan sejak awal, tidak ada biaya siluman di tengah jalan. Renovasi rumah kami di BSD selesai tepat 3,5 bulan dengan finishing marmer yang sangat rapi.'],
@@ -29,7 +30,7 @@ class ProjectController extends Controller
         ];
 
         return view('pages.projects.index', [
-            'items'        => $items->values(),
+            'items'        => $query->get(),
             'categories'   => $categories,
             'active'       => $active,
             'sort'         => $sort,
@@ -39,12 +40,11 @@ class ProjectController extends Controller
 
     public function show(string $slug)
     {
-        $item = SiteData::projects()->firstWhere('slug', $slug);
-        abort_if(! $item, 404);
+        $item = Project::published()->where('slug', $slug)->firstOrFail();
 
         return view('pages.projects.show', [
             'item'    => $item,
-            'related' => SiteData::projects()->where('slug', '!=', $slug)->sortByDesc('date')->take(3)->values(),
+            'related' => Project::published()->where('slug', '!=', $slug)->orderByDesc('completed_at')->take(3)->get(),
         ]);
     }
 }

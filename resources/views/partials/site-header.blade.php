@@ -21,9 +21,9 @@
       </a>
 
       <div class="flex items-center gap-4 text-gray-500 text-sm">
-        <a href="#" class="hidden sm:block hover:text-primary transition-colors" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-        <a href="#" class="hidden sm:block hover:text-primary transition-colors" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-        <a href="#" class="hidden sm:block hover:text-primary transition-colors" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="{{ Setting::get('instagram') }}" target="_blank" class="hidden sm:block hover:text-primary transition-colors" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="{{ Setting::get('facebook') }}" target="_blank" class="hidden sm:block hover:text-primary transition-colors" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="{{ Setting::get('tiktok') }}" target="_blank" class="hidden sm:block hover:text-primary transition-colors" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
 
         <a href="{{ auth()->check() ? route('admin.dashboard') : route('login') }}"
            title="{{ auth()->check() ? 'Dashboard Admin' : 'Login' }}"
@@ -44,7 +44,7 @@
           </a>
         @endforeach
       </div>
-      <a href="https://wa.me/6281234567890" target="_blank"
+      <a href="https://wa.me/{{ Setting::get('whatsapp') }}" target="_blank"
          class="inline-flex items-center px-5 py-2 rounded-full bg-white text-brand-dark font-bold text-xs hover:bg-primary-container hover:text-white transition-all">
         <i class="fa-brands fa-whatsapp mr-1.5 text-secondary"></i> WhatsApp
       </a>

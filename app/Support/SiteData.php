@@ -2,28 +2,47 @@
 
 namespace App\Support;
 
+use App\Models\Category;
 use Illuminate\Support\Collection;
 
 class SiteData
 {
+    private static array $catCache = [];
+
+    private static function categoriesFor(string $type, array $fallback): array
+    {
+        if (! isset(self::$catCache[$type])) {
+            try {
+                $rows = Category::where('type', $type)
+                    ->orderBy('sort_order')->orderBy('id')
+                    ->pluck('name', 'key')->all();
+            } catch (\Throwable $e) {
+                $rows = [];
+            }
+            self::$catCache[$type] = $rows ?: $fallback;
+        }
+
+        return self::$catCache[$type];
+    }
+
     public static function catalogCategories(): array
     {
-        return [
+        return self::categoriesFor('catalog', [
             'bangun'   => 'Pembangunan Rumah',
             'renovasi' => 'Renovasi Properti',
             'tanah'    => 'Jual Beli Tanah',
             'surat'    => 'Pengurusan Surat & PBG',
-        ];
+        ]);
     }
 
     public static function projectCategories(): array
     {
-        return [
+        return self::categoriesFor('project', [
             'rumah'     => 'Pembangunan Rumah',
             'renovasi'  => 'Renovasi Properti',
             'komersial' => 'Komersial & Kost',
             'pbg'       => 'Jual Beli Tanah & PBG',
-        ];
+        ]);
     }
 
     public static function catalog(): Collection

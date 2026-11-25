@@ -35,7 +35,7 @@
 
 <script>
 (function () {
-  const WA = 'https://wa.me/6281234567890';
+  const WA = 'https://wa.me/{{ Setting::get('whatsapp') }}';
   const panel = document.getElementById('ai-panel');
   const box = document.getElementById('ai-messages');
   const quick = document.getElementById('ai-quick');

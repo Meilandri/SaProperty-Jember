@@ -1,7 +1,6 @@
 @props(['item'])
 @php
   $img = str_starts_with($item['image'], 'http') ? $item['image'] : asset($item['image']);
-  $wa  = 'https://wa.me/6281234567890?text=' . rawurlencode('Halo SA Properti, saya tertarik konsultasi ' . $item['title']);
 @endphp
 
 <article class="relative flex flex-col group rounded-3xl overflow-hidden bg-white shadow-sm hover:shadow-xl transition-all duration-300 border border-surface-container-high">

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Support\SiteData;
+use App\Models\Project;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $projects = SiteData::projects()->sortByDesc('date')->take(3)->values();
+        $projects = Project::published()->orderByDesc('completed_at')->take(3)->get();
 
         return view('pages.home', compact('projects'));
     }

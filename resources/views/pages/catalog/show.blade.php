@@ -4,7 +4,7 @@
 
 @php
   $img = str_starts_with($item['image'], 'http') ? $item['image'] : asset($item['image']);
-  $wa  = 'https://wa.me/6281234567890?text=' . rawurlencode('Halo SA Properti, saya tertarik dengan ' . $item['title'] . '. Bisa minta informasi lebih lanjut?');
+  $wa  = 'https://wa.me/' . Setting::get('whatsapp') . '?text=' . rawurlencode('Halo SA Properti, saya tertarik dengan ' . $item['title'] . '. Bisa minta informasi lebih lanjut?');
 @endphp
 
 @section('content')

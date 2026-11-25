@@ -28,6 +28,23 @@
     --color-on-surface-variant: #5d3f3c;
 }
 
+input[type="file"]::file-selector-button {
+    margin-right: 1rem;
+    padding: 0.55rem 1.25rem;
+    border: 0;
+    border-radius: 9999px;
+    background-color: #e31b23;
+    color: #ffffff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: #b90014;
+}
+
 .hero-curved-bottom {
     border-bottom-left-radius: 120px 80px;
 }
