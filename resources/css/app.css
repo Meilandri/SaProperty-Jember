@@ -1,0 +1,44 @@
+@import "tailwindcss";
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+@theme {
+    --font-sans: "Plus Jakarta Sans", sans-serif;
+    --color-brand-red: #e31b23;
+    --color-brand-red-hover: #c8151c;
+    --color-brand-dark: #1e2024;
+    --color-brand-gray: #52575e;
+    --color-primary: #b90014;
+    --color-primary-container: #e31b23;
+    --color-primary-fixed: #ffdad6;
+    --color-on-primary: #ffffff;
+    --color-on-primary-fixed: #410002;
+    --color-secondary: #006d2f;
+    --color-on-secondary: #ffffff;
+    --color-secondary-fixed: #66ff8e;
+    --color-on-secondary-fixed: #002109;
+    --color-tertiary: #5c5a5a;
+    --color-surface: #f9f9f9;
+    --color-surface-container-lowest: #ffffff;
+    --color-surface-container-low: #f3f3f3;
+    --color-surface-container: #eeeeee;
+    --color-surface-container-high: #e8e8e8;
+    --color-on-surface: #1a1c1c;
+    --color-on-surface-variant: #5d3f3c;
+}
+
+.hero-curved-bottom {
+    border-bottom-left-radius: 120px 80px;
+}
+
+@media (min-width: 1024px) {
+    .hero-curved-bottom {
+        border-bottom-left-radius: 280px 180px;
+    }
+}
+
+.project-card-badge {
+    backdrop-filter: blur(8px);
+    background-color: rgba(17, 24, 39, 0.72);
+}
