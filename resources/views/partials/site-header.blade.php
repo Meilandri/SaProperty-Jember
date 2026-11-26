@@ -9,7 +9,7 @@
   $isActive = fn ($route) => request()->routeIs($route) || request()->routeIs(str_replace('.index', '.*', $route));
 @endphp
 
-<div class="fixed top-0 inset-x-0 z-50">
+<div id="site-header" class="fixed top-0 inset-x-0 z-50">
 
   <div class="bg-white border-b border-surface-container-high">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 h-14 flex items-center justify-between">
@@ -45,7 +45,7 @@
         @endforeach
       </div>
       <a href="https://wa.me/{{ Setting::get('whatsapp') }}" target="_blank"
-         class="inline-flex items-center px-5 py-2 rounded-full bg-white text-brand-dark font-bold text-xs hover:bg-primary-container hover:text-white transition-all">
+         class="press inline-flex items-center px-5 py-2 rounded-full bg-white text-brand-dark font-bold text-xs hover:bg-primary-container hover:text-white transition-all">
         <i class="fa-brands fa-whatsapp mr-1.5 text-secondary"></i> WhatsApp
       </a>
     </div>

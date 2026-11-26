@@ -8,7 +8,7 @@
   };
 @endphp
 
-<article class="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col">
+<article class="lift group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col">
   <div class="relative h-64 w-full overflow-hidden bg-surface-container">
     <img src="{{ $img }}" alt="{{ $item['title'] }}" loading="lazy"
          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">

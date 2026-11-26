@@ -14,7 +14,7 @@ class CatalogItemController extends Controller
     public function index()
     {
         return view('admin.catalog.index', [
-            'items' => CatalogItem::orderBy('popular')->latest()->paginate(15),
+            'items' => CatalogItem::orderByDesc('id')->paginate(15),
         ]);
     }
 
@@ -29,7 +29,8 @@ class CatalogItemController extends Controller
         $data['slug'] = Content::uniqueSlug(CatalogItem::class, $data['title']);
         $data['image'] = Content::store($request->file('image'), 'catalog');
 
-        CatalogItem::create($data);
+        $item = CatalogItem::create($data);
+        $item->syncGallery($request);
 
         return redirect()->route('admin.catalog.index')->with('status', 'Layanan berhasil ditambahkan.');
     }
@@ -49,6 +50,7 @@ class CatalogItemController extends Controller
         }
 
         $item->update($data);
+        $item->syncGallery($request);
 
         return redirect()->route('admin.catalog.index')->with('status', 'Layanan berhasil diperbarui.');
     }
@@ -56,6 +58,7 @@ class CatalogItemController extends Controller
     public function destroy(CatalogItem $item)
     {
         Content::delete($item->image);
+        $item->deleteGallery();
         $item->delete();
 
         return back()->with('status', 'Layanan dihapus.');
@@ -76,16 +79,18 @@ class CatalogItemController extends Controller
             'price_note'     => ['nullable', 'string', 'max:100'],
             'price_text'     => ['nullable', 'string', 'max:50'],
             'price'          => ['nullable', 'numeric', 'min:0'],
-            'popular'        => ['nullable', 'integer', 'min:1'],
             'loc_name'       => ['nullable', 'string', 'max:150'],
             'loc_address'    => ['nullable', 'string', 'max:255'],
             'loc_query'      => ['nullable', 'string', 'max:255'],
-            'image'          => [$imageRequired ? 'required' : 'nullable', 'image', 'max:4096'],
+            'image'          => [$imageRequired ? 'required' : 'nullable', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'gallery'        => ['nullable', 'array', 'max:10'],
+            'gallery.*'      => ['mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'remove_images'  => ['nullable', 'array'],
         ], [
             'title.required' => 'Judul wajib diisi.',
             'desc.required'  => 'Deskripsi singkat wajib diisi.',
             'image.required' => 'Gambar wajib diunggah.',
-            'image.image'    => 'File harus berupa gambar.',
+            'image.mimes'    => 'Gambar harus berformat JPG, PNG, atau WebP.',
             'image.max'      => 'Ukuran gambar maksimal 4 MB.',
         ]);
 
@@ -105,7 +110,6 @@ class CatalogItemController extends Controller
             'price_note'   => $v['price_note'] ?? null,
             'price_text'   => $v['price_text'] ?? null,
             'price'        => $v['price'] ?? 0,
-            'popular'      => $v['popular'] ?? 99,
             'location'     => filled($v['loc_query'] ?? null) ? [
                 'name'    => $v['loc_name'] ?: $v['title'],
                 'address' => $v['loc_address'] ?: $v['loc_query'],

@@ -3,7 +3,7 @@
   $img = str_starts_with($item['image'], 'http') ? $item['image'] : asset($item['image']);
 @endphp
 
-<article class="relative flex flex-col group rounded-3xl overflow-hidden bg-white shadow-sm hover:shadow-xl transition-all duration-300 border border-surface-container-high">
+<article class="lift relative flex flex-col group rounded-3xl overflow-hidden bg-white shadow-sm hover:shadow-xl transition-all duration-300 border border-surface-container-high">
   <div class="relative h-64 sm:h-72 w-full overflow-hidden bg-surface-container">
     <img src="{{ $img }}" alt="{{ $item['title'] }}" loading="lazy"
          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out">

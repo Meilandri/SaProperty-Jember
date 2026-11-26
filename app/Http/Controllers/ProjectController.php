@@ -20,8 +20,16 @@ class ProjectController extends Controller
             $query->where('category', $active);
         }
 
+        $q = trim((string) $request->query('q', ''));
+        if ($q !== '') {
+            $like = '%' . addcslashes($q, '%_\\') . '%';
+            $query->where(fn ($w) => $w->where('title', 'ilike', $like)
+                ->orWhere('location', 'ilike', $like)
+                ->orWhere('desc', 'ilike', $like));
+        }
+
         $sort = $request->query('urut', 'terbaru');
-        $sort === 'terpopuler' ? $query->orderBy('popular') : $query->orderByDesc('completed_at');
+        $sort === 'terlama' ? $query->orderBy('id') : $query->orderByDesc('id');
 
         $testimonials = [
             ['initial' => 'BW', 'name' => 'Bapak Budi Wijaya',    'role' => 'Pemilik Rumah, BSD City',     'text' => 'RAB sangat transparan sejak awal, tidak ada biaya siluman di tengah jalan. Renovasi rumah kami di BSD selesai tepat 3,5 bulan dengan finishing marmer yang sangat rapi.'],
@@ -30,10 +38,11 @@ class ProjectController extends Controller
         ];
 
         return view('pages.projects.index', [
-            'items'        => $query->get(),
+            'items'        => $query->paginate(9)->withQueryString(),
             'categories'   => $categories,
             'active'       => $active,
             'sort'         => $sort,
+            'q'            => $q,
             'testimonials' => $testimonials,
         ]);
     }
@@ -44,7 +53,7 @@ class ProjectController extends Controller
 
         return view('pages.projects.show', [
             'item'    => $item,
-            'related' => Project::published()->where('slug', '!=', $slug)->orderByDesc('completed_at')->take(3)->get(),
+            'related' => Project::published()->where('slug', '!=', $slug)->orderByDesc('id')->take(3)->get(),
         ]);
     }
 }

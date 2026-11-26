@@ -4,9 +4,11 @@ namespace App\Models;
 
 use App\Support\SiteData;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Concerns\HasGallery;
 
 class CatalogItem extends Model
 {
+    use HasGallery;
     protected $guarded = [];
 
     protected $casts = [

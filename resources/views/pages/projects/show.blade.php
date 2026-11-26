@@ -17,10 +17,8 @@
 
   <div class="grid grid-cols-1 lg:grid-cols-5 gap-10">
 
-    <div class="lg:col-span-3 space-y-8">
-      <div class="rounded-3xl overflow-hidden bg-surface-container aspect-[4/3]">
-        <img src="{{ $img }}" alt="{{ $item['title'] }}" class="w-full h-full object-cover">
-      </div>
+    <div data-reveal="left" class="lg:col-span-3 space-y-8">
+      @include('partials.gallery', ['item' => $item])
 
       <div>
         <h2 class="text-xl font-bold mb-3">Tentang Proyek</h2>
@@ -39,7 +37,7 @@
       </div>
     </div>
 
-    <aside class="lg:col-span-2">
+    <aside data-reveal="right" class="lg:col-span-2">
       <div class="lg:sticky lg:top-36 bg-white border border-surface-container-high rounded-3xl p-6 shadow-sm space-y-5">
         <span class="inline-block px-3.5 py-1.5 rounded-full bg-on-surface text-surface text-xs font-semibold">
           {{ $item['category_label'] }}
@@ -56,7 +54,7 @@
         <p class="text-sm text-gray-500"><i class="fa-solid fa-location-dot text-primary-container mr-2"></i>{{ $item['location'] }}</p>
 
         <a href="{{ $wa }}" target="_blank"
-           class="flex items-center justify-center gap-2 w-full py-3.5 rounded-full bg-green-500 hover:bg-green-600 text-white font-bold text-sm transition-colors">
+           class="press flex items-center justify-center gap-2 w-full py-3.5 rounded-full bg-green-500 hover:bg-green-600 text-white font-bold text-sm transition-colors">
           <i class="fa-brands fa-whatsapp text-lg"></i> Konsultasi Proyek Serupa
         </a>
       </div>
@@ -66,8 +64,8 @@
 
 <section class="bg-surface-container-low py-16">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-    <h2 class="text-2xl font-extrabold mb-8">Proyek Lainnya</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <h2 data-reveal class="text-2xl font-extrabold mb-8">Proyek Lainnya</h2>
+    <div data-stagger class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       @foreach ($related as $r)
         <x-portfolio-card :item="$r" />
       @endforeach

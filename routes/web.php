@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\CatalogItemController as AdminCatalogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\HomeController;
@@ -41,6 +43,15 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
         ->only(['index', 'store', 'update', 'destroy'])
         ->parameters(['kategori' => 'category'])->names('categories');
 
+    Route::resource('testimoni', TestimonialController::class)
+        ->only(['index', 'store', 'update', 'destroy'])
+        ->parameters(['testimoni' => 'testimonial'])->names('testimonials');
+
     Route::get('/pengaturan/{group}', [SettingController::class, 'edit'])->name('settings.edit');
     Route::put('/pengaturan/{group}', [SettingController::class, 'update'])->name('settings.update');
+
+    Route::get('/akun', [AccountController::class, 'index'])->name('account.index');
+    Route::put('/akun/password', [AccountController::class, 'password'])->name('account.password');
+    Route::post('/akun/admin', [AccountController::class, 'store'])->name('account.store');
+    Route::delete('/akun/admin/{user}', [AccountController::class, 'destroy'])->name('account.destroy');
 });

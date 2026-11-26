@@ -12,18 +12,22 @@
 
 @php
   $menu = [
-    ['Utama', [
-      [route('admin.dashboard'), 'Dashboard', 'fa-gauge', request()->routeIs('admin.dashboard')],
-    ]],
-    ['Konten', [
-      [route('admin.catalog.index'), 'Katalog', 'fa-book-open', request()->routeIs('admin.catalog.*')],
-      [route('admin.projects.index'), 'Proyek', 'fa-building', request()->routeIs('admin.projects.*')],
-      [route('admin.categories.index'), 'Kategori', 'fa-tags', request()->routeIs('admin.categories.*')],
-    ]],
-    ['Pengaturan Situs', collect(\App\Models\Setting::groups())->map(fn ($g, $key) => [
-      route('admin.settings.edit', $key), $g['label'], $g['icon'], request()->is('admin/pengaturan/'.$key),
-    ])->values()->all()],
-  ];
+  ['Utama', [
+    [route('admin.dashboard'), 'Dashboard', 'fa-gauge', request()->routeIs('admin.dashboard')],
+  ]],
+  ['Konten', [
+    [route('admin.catalog.index'), 'Katalog', 'fa-book-open', request()->routeIs('admin.catalog.*')],
+    [route('admin.projects.index'), 'Proyek', 'fa-building', request()->routeIs('admin.projects.*')],
+    [route('admin.categories.index'), 'Kategori', 'fa-tags', request()->routeIs('admin.categories.*')],
+    [route('admin.testimonials.index'), 'Testimoni', 'fa-comments', request()->routeIs('admin.testimonials.*')],
+  ]],
+  ['Pengaturan Situs', collect(\App\Models\Setting::groups())->map(fn ($g, $key) => [
+    route('admin.settings.edit', $key), $g['label'], $g['icon'], request()->is('admin/pengaturan/'.$key),
+  ])->values()->all()],
+  ['Akun', [
+    [route('admin.account.index'), 'Admin & Password', 'fa-user-shield', request()->routeIs('admin.account.*')],
+  ]],
+];
 @endphp
 
 <div class="min-h-screen md:flex">

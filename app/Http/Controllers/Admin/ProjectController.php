@@ -14,7 +14,7 @@ class ProjectController extends Controller
     public function index()
     {
         return view('admin.projects.index', [
-            'items' => Project::orderByDesc('completed_at')->paginate(15),
+            'items' => Project::orderByDesc('id')->paginate(15),
         ]);
     }
 
@@ -29,7 +29,8 @@ class ProjectController extends Controller
         $data['slug'] = Content::uniqueSlug(Project::class, $data['title']);
         $data['image'] = Content::store($request->file('image'), 'projects');
 
-        Project::create($data);
+        $item = Project::create($data);
+        $item->syncGallery($request);
 
         return redirect()->route('admin.projects.index')->with('status', 'Proyek berhasil ditambahkan.');
     }
@@ -49,6 +50,7 @@ class ProjectController extends Controller
         }
 
         $project->update($data);
+        $project->syncGallery($request);
 
         return redirect()->route('admin.projects.index')->with('status', 'Proyek berhasil diperbarui.');
     }
@@ -56,6 +58,7 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         Content::delete($project->image);
+        $project->deleteGallery();
         $project->delete();
 
         return back()->with('status', 'Proyek dihapus.');
@@ -64,24 +67,26 @@ class ProjectController extends Controller
     private function payload(Request $request, bool $imageRequired): array
     {
         $v = $request->validate([
-            'title'          => ['required', 'string', 'max:200'],
-            'category'       => ['required', Rule::in(array_keys(SiteData::projectCategories()))],
-            'location'       => ['nullable', 'string', 'max:150'],
-            'lt'             => ['nullable', 'string', 'max:30'],
-            'lb'             => ['nullable', 'string', 'max:30'],
-            'duration'       => ['nullable', 'string', 'max:50'],
-            'badge'          => ['nullable', 'string', 'max:50'],
-            'badge_style'    => ['required', Rule::in(['green', 'dark', 'red'])],
-            'completed_at'   => ['nullable', 'date'],
-            'popular'        => ['nullable', 'integer', 'min:1'],
-            'desc'           => ['required', 'string', 'max:2000'],
+            'title'           => ['required', 'string', 'max:200'],
+            'category'        => ['required', Rule::in(array_keys(SiteData::projectCategories()))],
+            'location'        => ['nullable', 'string', 'max:150'],
+            'lt'              => ['nullable', 'string', 'max:30'],
+            'lb'              => ['nullable', 'string', 'max:30'],
+            'duration'        => ['nullable', 'string', 'max:50'],
+            'badge'           => ['nullable', 'string', 'max:50'],
+            'badge_style'     => ['required', Rule::in(['green', 'dark', 'red'])],
+            'completed_at'    => ['nullable', 'date'],
+            'desc'            => ['required', 'string', 'max:2000'],
             'highlights_text' => ['nullable', 'string', 'max:2000'],
-            'image'          => [$imageRequired ? 'required' : 'nullable', 'image', 'max:4096'],
+            'image'           => [$imageRequired ? 'required' : 'nullable', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'gallery'         => ['nullable', 'array', 'max:10'],
+            'gallery.*'       => ['mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'remove_images'   => ['nullable', 'array'],
         ], [
             'title.required' => 'Judul wajib diisi.',
             'desc.required'  => 'Deskripsi wajib diisi.',
             'image.required' => 'Gambar wajib diunggah.',
-            'image.image'    => 'File harus berupa gambar.',
+            'image.mimes'    => 'Gambar harus berformat JPG, PNG, atau WebP.',
             'image.max'      => 'Ukuran gambar maksimal 4 MB.',
         ]);
 
@@ -95,7 +100,6 @@ class ProjectController extends Controller
             'badge'        => $v['badge'] ?? null,
             'badge_style'  => $v['badge_style'],
             'completed_at' => $v['completed_at'] ?? null,
-            'popular'      => $v['popular'] ?? 99,
             'desc'         => $v['desc'],
             'highlights'   => Content::lines($v['highlights_text'] ?? ''),
             'is_published' => $request->boolean('is_published'),

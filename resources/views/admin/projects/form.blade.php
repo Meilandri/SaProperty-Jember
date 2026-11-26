@@ -88,27 +88,39 @@
 
   <div class="bg-white border border-surface-container-high rounded-2xl p-6 shadow-sm space-y-5">
     <h2 class="font-bold">Gambar & Tayang</h2>
+
     <div>
-      <label class="{{ $label }}">Gambar @unless ($item) <span class="text-primary-container">*</span> @endunless</label>
+      <label class="{{ $label }}">Gambar Utama @unless ($item) <span class="text-primary-container">*</span> @endunless</label>
       <img id="preview" src="{{ $item ? asset($item->image) : '' }}" alt=""
            class="{{ $item ? '' : 'hidden' }} w-full max-w-xs h-44 object-cover rounded-xl mb-3 bg-surface-container">
       <input id="image" type="file" name="image" accept="image/*" class="text-sm">
       @if ($item) <p class="text-xs text-gray-400 mt-1">Kosongkan jika tidak ingin mengganti gambar.</p> @endif
     </div>
 
-    <div class="grid sm:grid-cols-2 gap-5">
-      <div>
-        <label class="{{ $label }}">Urutan populer</label>
-        <input name="popular" type="number" min="1" value="{{ old('popular', $item?->popular ?? 99) }}" class="{{ $field }}">
-        <p class="text-xs text-gray-400 mt-1">Angka kecil tampil lebih dulu.</p>
-      </div>
-      <div class="flex items-end">
-        <input type="hidden" name="is_published" value="0">
-        <label class="flex items-center gap-2 text-sm font-semibold">
-          <input type="checkbox" name="is_published" value="1" class="rounded" @checked(old('is_published', $item?->is_published ?? true))>
-          Tayangkan di website
-        </label>
-      </div>
+    <div>
+      <label class="{{ $label }}">Galeri Foto Tambahan <span class="text-gray-400 font-normal">(maksimal 10, boleh pilih banyak sekaligus)</span></label>
+
+      @if ($item && $item->images->count())
+        <p class="text-xs text-gray-500 mb-2">Centang foto yang ingin dihapus:</p>
+        <div class="grid grid-cols-3 sm:grid-cols-4 gap-3 mb-4">
+          @foreach ($item->images as $img)
+            <label class="relative block cursor-pointer">
+              <img src="{{ asset($img->path) }}" alt="" class="w-full h-24 object-cover rounded-xl bg-surface-container">
+              <input type="checkbox" name="remove_images[]" value="{{ $img->id }}" class="absolute top-2 left-2 w-5 h-5 rounded">
+            </label>
+          @endforeach
+        </div>
+      @endif
+
+      <input type="file" name="gallery[]" accept="image/*" multiple class="text-sm">
+    </div>
+
+    <div>
+      <input type="hidden" name="is_published" value="0">
+      <label class="flex items-center gap-2 text-sm font-semibold">
+        <input type="checkbox" name="is_published" value="1" class="rounded" @checked(old('is_published', $item?->is_published ?? true))>
+        Tayangkan di website
+      </label>
     </div>
   </div>
 

@@ -20,18 +20,25 @@ class CatalogController extends Controller
             $query->where('category', $active);
         }
 
-        $sort = $request->query('urut', 'popular');
+        $q = trim((string) $request->query('q', ''));
+        if ($q !== '') {
+            $like = '%' . addcslashes($q, '%_\\') . '%';
+            $query->where(fn ($w) => $w->where('title', 'ilike', $like)->orWhere('desc', 'ilike', $like));
+        }
+
+        $sort = $request->query('urut', 'terbaru');
         match ($sort) {
             'price-low'  => $query->orderBy('price'),
             'price-high' => $query->orderByDesc('price'),
-            default      => $query->orderBy('popular'),
+            default      => $query->orderByDesc('id'),
         };
 
         return view('pages.catalog.index', [
-            'items'      => $query->get(),
+            'items'      => $query->paginate(9)->withQueryString(),
             'categories' => $categories,
             'active'     => $active,
             'sort'       => $sort,
+            'q'          => $q,
         ]);
     }
 
@@ -42,7 +49,7 @@ class CatalogController extends Controller
         return view('pages.catalog.show', [
             'item'       => $item,
             'categories' => SiteData::catalogCategories(),
-            'related'    => CatalogItem::published()->where('slug', '!=', $slug)->orderBy('popular')->take(3)->get(),
+            'related'    => CatalogItem::published()->where('slug', '!=', $slug)->orderByDesc('id')->take(3)->get(),
         ]);
     }
 }

@@ -27,11 +27,11 @@ class SettingController extends Controller
         $rules = [];
         foreach ($fields as $key => $f) {
             $rules[$key] = $f[1] === 'image'
-                ? ['nullable', 'image', 'max:4096']
+                ? ['nullable', 'mimes:jpg,jpeg,png,webp', 'max:4096']
                 : ['nullable', 'string', 'max:5000'];
         }
         $request->validate($rules, [
-            '*.image' => 'File harus berupa gambar.',
+            '*.mimes' => 'Gambar harus berformat JPG, PNG, atau WebP.',
             '*.max'   => 'Ukuran/panjang isian melebihi batas.',
         ]);
 
