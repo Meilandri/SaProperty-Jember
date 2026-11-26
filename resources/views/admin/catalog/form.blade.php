@@ -89,23 +89,21 @@
   </div>
 
   <div class="bg-white border border-surface-container-high rounded-2xl p-6 shadow-sm space-y-5">
-    <h2 class="font-bold">Lokasi <span class="text-gray-400 font-normal text-sm">(opsional, untuk jual beli tanah/rumah)</span></h2>
+  <h2 class="font-bold">Lokasi <span class="text-gray-400 font-normal text-sm">(opsional, untuk jual beli tanah/rumah)</span></h2>
+
+  <x-map-picker name="loc_point" :value="old('loc_point', $pt)" :search="old('loc_address', $loc['address'] ?? '')" />
+
+  <div class="grid sm:grid-cols-2 gap-5">
     <div>
-      <label class="{{ $label }}">Alamat / koordinat untuk peta</label>
-      <input name="loc_query" value="{{ old('loc_query', $loc['query'] ?? '') }}" class="{{ $field }}" placeholder="Serpong, Tangerang Selatan atau -6.3,106.66">
-      <p class="text-xs text-gray-400 mt-1">Jika dikosongkan, peta tidak ditampilkan.</p>
+      <label class="{{ $label }}">Nama Lokasi</label>
+      <input name="loc_name" value="{{ old('loc_name', $loc['name'] ?? '') }}" class="{{ $field }}">
     </div>
-    <div class="grid sm:grid-cols-2 gap-5">
-      <div>
-        <label class="{{ $label }}">Nama Lokasi</label>
-        <input name="loc_name" value="{{ old('loc_name', $loc['name'] ?? '') }}" class="{{ $field }}">
-      </div>
-      <div>
-        <label class="{{ $label }}">Alamat Tampilan</label>
-        <input name="loc_address" value="{{ old('loc_address', $loc['address'] ?? '') }}" class="{{ $field }}">
-      </div>
+    <div>
+      <label class="{{ $label }}">Alamat Tampilan</label>
+      <input name="loc_address" value="{{ old('loc_address', $loc['address'] ?? '') }}" class="{{ $field }}">
     </div>
   </div>
+</div>
 
   <div class="bg-white border border-surface-container-high rounded-2xl p-6 shadow-sm space-y-5">
     <h2 class="font-bold">Gambar & Tayang</h2>

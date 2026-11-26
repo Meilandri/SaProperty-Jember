@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'nvidia' => [
+    'key'   => env('NVIDIA_API_KEY'),
+    'model' => env('NVIDIA_MODEL'),
+    'url'   => env('NVIDIA_BASE_URL', 'https://integrate.api.nvidia.com/v1'),
+    ],
+
 ];

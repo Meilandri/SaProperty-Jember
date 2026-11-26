@@ -3,12 +3,11 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-gray-100">
 
       <div class="lg:col-span-2 space-y-4">
-        <div class="flex items-center gap-3">
-          <img src="{{ asset('images/logo.png') }}" alt="SA Properti" class="h-10 w-auto" onerror="this.style.display='none'">
-          <span class="font-extrabold tracking-wider text-lg uppercase">SA <span class="text-brand-red">Properti</span></span>
-        </div>
+        <a href="{{ route('home') }}" class="inline-block">
+          <img src="{{ asset('images/SaProperti.png') }}" alt="SA Properti" class="h-12 w-auto object-contain">
+        </a>
         <p class="text-gray-500 text-xs sm:text-sm leading-relaxed pr-6">
-          Perusahaan kontraktor arsitektur, rancang bangun baru, renovasi modern, dan konsultan investasi properti terpercaya di Indonesia.
+            {{ Setting::get('footer_about') }}
         </p>
         <div class="text-xs text-gray-500 space-y-1">
           <p><i class="fa-solid fa-location-dot text-brand-red mr-2"></i>{{ Setting::get('address') }}</p>
@@ -44,7 +43,7 @@
     </div>
 
     <div class="pt-8 text-xs text-gray-400 text-center sm:text-left">
-      © {{ date('Y') }} SA Properti (PT SA Karya Properti Indonesia). Hak cipta dilindungi undang-undang.
+      {{ str_replace('{year}', date('Y'), Setting::get('copyright')) }}
     </div>
   </div>
 </footer>

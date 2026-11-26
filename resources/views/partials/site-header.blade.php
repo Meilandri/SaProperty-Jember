@@ -14,10 +14,8 @@
   <div class="bg-white border-b border-surface-container-high">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 h-14 flex items-center justify-between">
 
-      <a href="{{ route('home') }}" class="flex items-center gap-2">
-        <img src="{{ asset('images/logo.png') }}" alt="SA Properti" class="h-8 w-auto object-contain"
-             onerror="this.style.display='none'">
-        <span class="font-extrabold tracking-wider text-sm uppercase">SA <span class="text-primary-container">Properti</span></span>
+      <a href="{{ route('home') }}" class="flex items-center">
+        <img src="{{ asset('images/SaProperti.png') }}" alt="SA Properti" class="h-18 w-auto object-contain">
       </a>
 
       <div class="flex items-center gap-4 text-gray-500 text-sm">

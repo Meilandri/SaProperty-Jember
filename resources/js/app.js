@@ -48,4 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         onScroll();
         window.addEventListener('scroll', onScroll, { passive: true });
     }
+    if (document.querySelector('[data-map-picker]')) {
+        import('./map-picker.js');
+    }
 });

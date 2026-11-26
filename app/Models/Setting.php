@@ -85,11 +85,23 @@ class Setting extends Model
                     'email'         => ['Email', 'text', 'info@saproperti.com'],
                     'address'       => ['Alamat', 'textarea', 'Grand Serpong Estate & Cilandak, Jakarta Selatan'],
                     'hours'         => ['Jam Operasional', 'textarea', "Senin - Jumat: 08.30 - 17.30 WIB\nSabtu: 09.00 - 15.00 WIB"],
-                    'map_query'     => ['Lokasi Peta (alamat atau koordinat)', 'text', 'Grand Serpong Estate, Tangerang Selatan', 'Contoh: -6.3,106.66 atau nama tempat.'],
+                    'map_point'     => ['Titik Lokasi Kantor di Peta', 'map', ''],
                     'instagram'     => ['Link Instagram', 'text', '#'],
                     'facebook'      => ['Link Facebook', 'text', '#'],
                     'tiktok'        => ['Link TikTok', 'text', '#'],
+                    'copyright'    => ['Teks Copyright', 'text', '© {year} SA Properti. Hak cipta dilindungi undang-undang.', '{year} otomatis menjadi tahun berjalan.'],
+                    'footer_about' => ['Deskripsi Singkat di Footer', 'textarea', 'SA Properti melayani jasa konstruksi, renovasi, jual beli tanah dan rumah, serta pengurusan sertifikat properti.'],
                 ],
+            ],
+
+            'chatbot' => [
+                'label' => 'Chatbot AI', 'icon' => 'fa-robot',
+                'fields' => [
+                    'ai_greeting'  => ['Sapaan Awal', 'textarea', 'Halo! Saya asisten AI SA Properti. Pilih pertanyaan cepat di bawah atau tulis pertanyaan Anda.'],
+                    'ai_knowledge' => ['Informasi untuk AI', 'textarea',
+                    "Layanan: renovasi (kamar mandi, keran, pengecatan, dan lainnya), pembangunan rumah dan kos dari nol, jual beli tanah dan rumah, pengurusan sertifikat properti.\nRenovasi adalah layanan yang paling banyak dicari.\nSetiap pesanan mendapat bonus desain layout (blueprint) dan gambar visual hasil akhir.\nKonsultasi dan negosiasi dilakukan lewat WhatsApp.\nMedia sosial: TikTok SA Properti Official, Facebook.",
+                     'Tulis fakta yang boleh dijawab AI, satu poin per baris. AI dilarang mengarang di luar ini.'],
+             ],
             ],
         ];
     }

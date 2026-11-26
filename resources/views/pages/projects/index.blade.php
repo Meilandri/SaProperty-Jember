@@ -13,7 +13,7 @@
     </div>
     <h1 class="hero-in hero-in-2 text-4xl lg:text-5xl font-extrabold tracking-tight max-w-3xl">Karya & Proyek Konstruksi Terpercaya</h1>
     <p class="hero-in hero-in-3 text-lg text-tertiary max-w-2xl">
-      Rekam jejak pembangunan rumah baru, renovasi modern, pengembangan kavling, hingga pendampingan legalitas di Jabodetabek & sekitarnya.
+      Rekam jejak pembangunan rumah baru, renovasi modern, pengembangan kavling, hingga pendampingan legalitas.
     </p>
   </div>
 </section>

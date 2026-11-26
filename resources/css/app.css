@@ -184,4 +184,13 @@ input[type="file"]::file-selector-button:hover {
     .floaty {
         animation: none !important;
     }
+
+    .no-scrollbar {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
 }

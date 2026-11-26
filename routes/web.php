@@ -12,6 +12,7 @@ use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatController;
 
 // Publik
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -23,6 +24,8 @@ Route::get('/katalog/{slug}', [CatalogController::class, 'show'])->name('catalog
 
 Route::get('/proyek', [ProjectController::class, 'index'])->name('projects.index');
 Route::get('/proyek/{slug}', [ProjectController::class, 'show'])->name('projects.show');
+
+Route::post('/chat', ChatController::class)->middleware('throttle:12,1')->name('chat');
 
 // Login
 Route::get('/login', [LoginController::class, 'show'])->name('login');

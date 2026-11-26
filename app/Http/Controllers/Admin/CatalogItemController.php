@@ -67,37 +67,40 @@ class CatalogItemController extends Controller
     private function payload(Request $request, bool $imageRequired): array
     {
         $v = $request->validate([
-            'title'          => ['required', 'string', 'max:150'],
-            'category'       => ['required', Rule::in(array_keys(SiteData::catalogCategories()))],
-            'size'           => ['nullable', 'string', 'max:100'],
-            'desc'           => ['required', 'string', 'max:500'],
-            'long'           => ['nullable', 'string', 'max:5000'],
-            'features_text'  => ['nullable', 'string', 'max:3000'],
-            'specs'          => ['nullable', 'array'],
-            'specs.*.label'  => ['nullable', 'string', 'max:30'],
-            'specs.*.value'  => ['nullable', 'string', 'max:50'],
-            'price_note'     => ['nullable', 'string', 'max:100'],
-            'price_text'     => ['nullable', 'string', 'max:50'],
-            'price'          => ['nullable', 'numeric', 'min:0'],
-            'loc_name'       => ['nullable', 'string', 'max:150'],
-            'loc_address'    => ['nullable', 'string', 'max:255'],
-            'loc_query'      => ['nullable', 'string', 'max:255'],
-            'image'          => [$imageRequired ? 'required' : 'nullable', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
-            'gallery'        => ['nullable', 'array', 'max:10'],
-            'gallery.*'      => ['mimes:jpg,jpeg,png,webp', 'max:4096'],
-            'remove_images'  => ['nullable', 'array'],
+            'title'         => ['required', 'string', 'max:150'],
+            'category'      => ['required', Rule::in(array_keys(SiteData::catalogCategories()))],
+            'size'          => ['nullable', 'string', 'max:100'],
+            'desc'          => ['required', 'string', 'max:500'],
+            'long'          => ['nullable', 'string', 'max:5000'],
+            'features_text' => ['nullable', 'string', 'max:3000'],
+            'specs'         => ['nullable', 'array'],
+            'specs.*.label' => ['nullable', 'string', 'max:30'],
+            'specs.*.value' => ['nullable', 'string', 'max:50'],
+            'price_note'    => ['nullable', 'string', 'max:100'],
+            'price_text'    => ['nullable', 'string', 'max:50'],
+            'price'         => ['nullable', 'numeric', 'min:0'],
+            'loc_name'      => ['nullable', 'string', 'max:150'],
+            'loc_address'   => ['nullable', 'string', 'max:255'],
+            'loc_point'     => ['nullable', 'regex:/^\s*-?\d{1,3}(\.\d+)?\s*,\s*-?\d{1,3}(\.\d+)?\s*$/'],
+            'image'         => [$imageRequired ? 'required' : 'nullable', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'gallery'       => ['nullable', 'array', 'max:10'],
+            'gallery.*'     => ['mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'remove_images' => ['nullable', 'array'],
         ], [
-            'title.required' => 'Judul wajib diisi.',
-            'desc.required'  => 'Deskripsi singkat wajib diisi.',
-            'image.required' => 'Gambar wajib diunggah.',
-            'image.mimes'    => 'Gambar harus berformat JPG, PNG, atau WebP.',
-            'image.max'      => 'Ukuran gambar maksimal 4 MB.',
+            'title.required'  => 'Judul wajib diisi.',
+            'desc.required'   => 'Deskripsi singkat wajib diisi.',
+            'image.required'  => 'Gambar wajib diunggah.',
+            'image.mimes'     => 'Gambar harus berformat JPG, PNG, atau WebP.',
+            'image.max'       => 'Ukuran gambar maksimal 4 MB.',
+            'loc_point.regex' => 'Titik lokasi tidak valid. Pilih ulang di peta.',
         ]);
 
         $specs = collect($v['specs'] ?? [])
             ->filter(fn ($s) => filled($s['label'] ?? null) && filled($s['value'] ?? null))
             ->map(fn ($s) => [$s['label'], $s['value']])
             ->values()->all();
+
+        $point = filled($v['loc_point'] ?? null) ? str_replace(' ', '', $v['loc_point']) : null;
 
         return [
             'title'        => $v['title'],
@@ -110,10 +113,10 @@ class CatalogItemController extends Controller
             'price_note'   => $v['price_note'] ?? null,
             'price_text'   => $v['price_text'] ?? null,
             'price'        => $v['price'] ?? 0,
-            'location'     => filled($v['loc_query'] ?? null) ? [
+            'location'     => $point ? [
                 'name'    => $v['loc_name'] ?: $v['title'],
-                'address' => $v['loc_address'] ?: $v['loc_query'],
-                'query'   => $v['loc_query'],
+                'address' => $v['loc_address'] ?: 'Lihat lokasi di peta',
+                'query'   => $point,
             ] : null,
             'is_published' => $request->boolean('is_published'),
         ];

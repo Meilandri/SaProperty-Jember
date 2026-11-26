@@ -69,7 +69,11 @@
         </div>
       </div>
 
-      <x-location-map :location="['name' => 'Kantor SA Properti', 'address' => Setting::get('address'), 'query' => Setting::get('map_query')]" />
+      <x-location-map :location="[
+        'name'    => 'Kantor SA Properti',
+        'address' => Setting::get('address'),
+        'query'   => Setting::get('map_point') ?: Setting::get('address'),
+          ]" />
     </div>
   </div>
 </section>
